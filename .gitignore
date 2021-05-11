@@ -1,5 +1,4 @@
-bin/
-obj/
-.vscode/
-.env
+*/obj/
+*/bin/
+.vscode
 .DS_Store
