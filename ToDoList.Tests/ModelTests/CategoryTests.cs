@@ -20,6 +20,7 @@ namespace ToDoList.Tests
       Category newCategory = new Category("test category");
       Assert.AreEqual(typeof(Category), newCategory.GetType());
     }
+
     [TestMethod]
     public void GetName_ReturnsName_String()
     {
@@ -33,6 +34,7 @@ namespace ToDoList.Tests
       //Assert
       Assert.AreEqual(name, result);
     }
+
     [TestMethod]
     public void GetId_ReturnsCategoryId_Int()
     {
@@ -46,6 +48,7 @@ namespace ToDoList.Tests
       //Assert
       Assert.AreEqual(1, result);
     }
+
     [TestMethod]
     public void GetAll_ReturnsAllCategoryObjects_CategoryList()
     {
@@ -62,6 +65,7 @@ namespace ToDoList.Tests
       //Assert
       CollectionAssert.AreEqual(newList, result);
     }
+
     [TestMethod]
     public void Find_ReturnsCorrectCategory_Category()
     {
@@ -77,7 +81,22 @@ namespace ToDoList.Tests
       //Assert
       Assert.AreEqual(newCategory2, result);
     }
+    [TestMethod]
+    public void AddItem_AssociatesItemWithCategory_ItemList()
+    {
+      //Arrange
+      string description = "Walk the dog.";
+      Item newItem = new Item(description);
+      List<Item> newList = new List<Item> { newItem };
+      string name = "Work";
+      Category newCategory = new Category(name);
+      newCategory.AddItem(newItem);
 
+      //Act
+      List<Item> result = newCategory.Items;
 
+      //Assert
+      CollectionAssert.AreEqual(newList, result);
+    }
   }
 }
