@@ -26,6 +26,7 @@ namespace ToDoList
     public void Configure(IApplicationBuilder app)
     {
       app.UseDeveloperExceptionPage();
+      app.UseStaticFiles();
       app.UseRouting();
 
       app.UseEndpoints(routes =>
@@ -38,5 +39,9 @@ namespace ToDoList
         await context.Response.WriteAsync("Hello World!");
       });
     }
+  }
+  public static class DBConfiguration
+  {
+    public static string ConnectionString = "server=localhost;user id=root;password=epicodus;port=3306;database=to_do_list;";
   }
 }
