@@ -67,32 +67,64 @@ namespace ToDoList.Models
       }
     }
 
-    public static Item Find(int searchId)
-    {
-      Item placeholderItem = new Item("placeholder item");
-      return placeholderItem;
-    }
 
-    public void Save()
+    public static Item Find(int id)
     {
+      // open a connection.
       MySqlConnection conn = DB.Connection();
       conn.Open();
+
+      //  create MySqlCommand object and add a query to its CommandText property. We always need to do this to make a SQL query.
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO items (description) VALUES (@ItemDescription);";
-      MySqlParameter description = new MySqlParameter();
-      description.ParameterName = "@ItemDescription";
-      description.Value = this.Description;
-      cmd.Parameters.Add(description);
-      cmd.ExecuteNonQuery();
-      Id = (int)cmd.LastInsertedId;
+      cmd.CommandText = @"SELECT * FROM items WHERE id = @thisId;";
+
+      // We have to use parameter placeholders (@thisId) and a `MySqlParameter` object to prevent SQL injection attacks. This is only necessary when we are passing parameters into a query. also did this with our Save() method.
+      MySqlParameter thisId = new MySqlParameter();
+      thisId.ParameterName = "@thisId";
+      thisId.Value = id;
+      cmd.Parameters.Add(thisId);
+
+      // use the ExecuteReader() method because our query will be returning results and we need this method to read these results. This is in contrast to the ExecuteNonQuery() method, which we use for SQL commands that don't return results like our Save() method.
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int itemId = 0;
+      string itemDescription = "";
+      while (rdr.Read())
+      {
+        itemId = rdr.GetInt32(0);
+        itemDescription = rdr.GetString(1);
+      }
+      Item foundItem = new Item(itemDescription, itemId);
+
+      // close the connection.
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
+      return foundItem;
     }
-
   }
+
+  public void Save()
+  {
+    MySqlConnection conn = DB.Connection();
+    conn.Open();
+    var cmd = conn.CreateCommand() as MySqlCommand;
+    cmd.CommandText = @"INSERT INTO items (description) VALUES (@ItemDescription);";
+    MySqlParameter description = new MySqlParameter();
+    description.ParameterName = "@ItemDescription";
+    description.Value = this.Description;
+    cmd.Parameters.Add(description);
+    cmd.ExecuteNonQuery();
+    Id = (int)cmd.LastInsertedId;
+    conn.Close();
+    if (conn != null)
+    {
+      conn.Dispose();
+    }
+  }
+
+}
 
 }
 
