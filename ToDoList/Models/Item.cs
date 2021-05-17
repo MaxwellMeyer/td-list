@@ -14,6 +14,20 @@ namespace ToDoList.Models
       Description = description;
       Id = id;
     }
+    public override bool Equals(System.Object otherItem)
+    {
+      if (!(otherItem is Item))
+      {
+        return false;
+      }
+      else
+      {
+        Item newItem = (Item)otherItem;
+        bool descriptionEquality = (this.Description == newItem.Description);
+        return descriptionEquality;
+      }
+    }
+
 
     public static List<Item> GetAll()
     {
