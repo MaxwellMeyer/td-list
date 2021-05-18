@@ -103,28 +103,30 @@ namespace ToDoList.Models
       }
       return foundItem;
     }
-  }
 
-  public void Save()
-  {
-    MySqlConnection conn = DB.Connection();
-    conn.Open();
-    var cmd = conn.CreateCommand() as MySqlCommand;
-    cmd.CommandText = @"INSERT INTO items (description) VALUES (@ItemDescription);";
-    MySqlParameter description = new MySqlParameter();
-    description.ParameterName = "@ItemDescription";
-    description.Value = this.Description;
-    cmd.Parameters.Add(description);
-    cmd.ExecuteNonQuery();
-    Id = (int)cmd.LastInsertedId;
-    conn.Close();
-    if (conn != null)
+
+    public void Save()
     {
-      conn.Dispose();
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO items (description) VALUES (@ItemDescription);";
+      MySqlParameter description = new MySqlParameter();
+      description.ParameterName = "@ItemDescription";
+      description.Value = this.Description;
+      cmd.Parameters.Add(description);
+      cmd.ExecuteNonQuery();
+      Id = (int)cmd.LastInsertedId;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
   }
-
 }
 
-}
+
+
+
 
