@@ -27,11 +27,14 @@ namespace ToDoList.Controllers
     //       ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
     //       return View();
     //     }
-    //     public ActionResult Details(int id)
-    //     {
-    //       Item thisItem = _db.Items.FirstOrDefault(item => item.ItemId == id);
-    //       return View(thisItem);
-    //     }
+    public ActionResult Details(int id)
+    {
+      var thisItem = _db.Items
+     .Include(item => item.JoinEntities)
+     .ThenInclude(join => join.Category)
+     .FirstOrDefault(item => item.ItemId == id);
+      return View(thisItem);
+    }
 
     //     public ActionResult Edit(int id)
     //     {
