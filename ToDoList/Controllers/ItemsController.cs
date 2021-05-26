@@ -21,12 +21,11 @@ namespace ToDoList.Controllers
       return View(_db.Items.ToList());
     }
 
-    //     [HttpPost]
-    //     public ActionResult Create()
-    //     {
-    //       ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
-    //       return View();
-    //     }
+    public ActionResult Create()
+    {
+      ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
+      return View();
+    }
     public ActionResult Details(int id)
     {
       var thisItem = _db.Items
