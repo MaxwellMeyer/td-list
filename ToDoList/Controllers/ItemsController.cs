@@ -53,14 +53,14 @@ namespace ToDoList.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-    public ActionResult Details(int id)
-    {
-      var thisItem = _db.Items
-     .Include(item => item.JoinEntities)
-     .ThenInclude(join => join.Category)
-     .FirstOrDefault(item => item.ItemId == id);
-      return View(thisItem);
-    }
+    // public ActionResult Details(int id)
+    // {
+    //   var thisItem = _db.Items
+    // .Include(item => item.JoinEntities)
+    // .ThenInclude(join => join.Category)
+    // .FirstOrDefault(item => item.ItemId == id);
+    //   return View(thisItem);
+    // }
 
     //     public ActionResult Edit(int id)
     //     {
